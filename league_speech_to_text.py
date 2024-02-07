@@ -1,12 +1,12 @@
-# Record from the mic
+# Record-From-The-Mic
 
-# Save that as a .wav
+# Save-That-As-A-.wav
 
-# Seech to text on that .wav
+# Speech-To-Text-On-That-.wav
 
-#Type that in League without messing it up "hehehehehehe"
+#Type-That-In-League-without-Messing-It-Up
 
-# Import necessary modules
+# Import-Necessary-Modules
 import speech_recognition as sr
 import numpy as np
 import sounddevice as sd
@@ -24,40 +24,45 @@ import keyboard
 import pyautogui as pag
 from time import sleep
 
+#File-Name-To-Save
+FILE_NAME = './lol_speech_to_text.wav'
 
-FILE_NAME = './test.wav'  #File name to save
-wave_length = 4  #Recording length (seconds)
-sample_rate = 16_000  #Sampling frequency
+#Recording-Length-(seconds)
+wave_length = 4
+
+# Sampling-Frequency
+sample_rate = 16_000
+
 while True:
     keyboard.wait('v')
     print("RECORDING ***")
-    #Start recording (wave_length Record for seconds. Wait until the recording is finished with wait)
+    # Start-Recording 
     data = sd.rec(int(wave_length * sample_rate), sample_rate, channels=1)
     sd.wait()
    
-    #Normalize. Since it is recorded with 16 bits of quantization bit, it is maximized in the range of int16.
+    # Normalize
     data = data / data.max() * np.iinfo(np.int16).max
    
-    # float -> int
+    # Float-To-Int
     data = data.astype(np.int16)
    
-    #Save file
+    #Save-File
     with wave.open(FILE_NAME, mode='wb') as wb:
-        wb.setnchannels(1)  #monaural
-        wb.setsampwidth(2)  # 16bit=2byte
+        # Monaural
+        wb.setnchannels(1)
+        # 16bit=2byte
+        wb.setsampwidth(2)
         wb.setframerate(sample_rate)
-        wb.writeframes(data.tobytes())  #Convert to byte string
-       
-       
-   
-   
-    filename = "test.wav"
+        # Convert-To-Byte-String
+        wb.writeframes(data.tobytes())
+    #File-Name-To-Save
+    filename = "lol_speech_to_text.wav"
     r = sr.Recognizer()
    
     with sr.AudioFile(filename) as source:
-        # listen for the data (load audio to memory)
+        # Listen-For-The-Data
         audio_data = r.record(source)
-        # recognize (convert from speech to text)
+        # Convert-From-Speech-To-Text)
         text = r.recognize_google(audio_data)
         print(text)
 
@@ -65,5 +70,3 @@ while True:
     sleep(0.01)
     pag.write(text)
     keyboard.press_and_release('enter')
-
-
